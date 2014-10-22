@@ -51,7 +51,6 @@ PNM* HistogramStretching::transform()
 	}
 	else
 	{
-		int ln = 0;
 		Histogram* his = image->getHistogram();
 		his->get(Histogram::RChannel);
 		QList<QHash<int, int>> cha;
@@ -61,70 +60,78 @@ PNM* HistogramStretching::transform()
 		cha.append(Rcha);
 		cha.append(Gcha);
 		cha.append(Bcha);
-		for (QHash<int, int> cha : cha)
+		int Rmin = 255;
+		int Rmax = 0;
+		int Gmin = 255;
+		int Gmax = 0;
+		int Bmin = 255;
+		int Bmax = 0;
+		QHash<int, int>::const_iterator Rite;
+		QHash<int, int>::const_iterator Gite;
+		QHash<int, int>::const_iterator Bite;
+		Rite = Rcha.constBegin();
+		Gite = Gcha.constBegin();
+		Bite = Bcha.constBegin();
+		while (Rite != Rcha.constEnd())
 		{
-			int min = 255;
-			int max = 0;
-			QHash<int, int>::const_iterator ite;
-			ite = cha.constBegin();
-			while (ite != cha.constEnd())
+			int r = Rite.key();
+			if (r > 0)
 			{
-				int r = ite.key();
-				if (r > 0)
-				{
-					if (r < min) min = ite.key();
-					if (r > max) max = ite.key();
-				}
-				ite++;
+				if (r < Rmin) Rmin = Rite.key();
+				if (r > Rmax) Rmax = Rite.key();
 			}
+			Rite++;
+		}
+		while (Gite != Gcha.constEnd())
+		{
+			int r = Gite.key();
+			if (r > 0)
+			{
+				if (r < Gmin) Gmin = Gite.key();
+				if (r > Gmax) Gmax = Gite.key();
+			}
+			Gite++;
+		}
+		while (Bite != Bcha.constEnd())
+		{
+			int r = Bite.key();
+			if (r > 0)
+			{
+				if (r < Bmin) Bmin = Bite.key();
+				if (r > Bmax) Bmax = Bite.key();
+			}
+			Bite++;
+		}
 			double top = 255.0;
-			double bot = max - min;
-			double str = top / bot;
+			double Rbot = Rmax - Rmin;
+			double Rstr = top / Rbot;
+			double Gbot = Gmax - Gmin;
+			double Gstr = top / Gbot;
+			double Bbot = Bmax - Bmin;
+			double Bstr = top / Bbot;
 			for (int x = 0; x < width; x++)
 			{
 				for (int y = 0; y < height; y++)
 				{
 					QRgb pix;
-					QRgb tpix;
 					QColor npix;
 					int red;
 					int gre;
 					int blu;
-					double szu;
-					if (ln == 0)
-					{
-						pix = image->pixel(x, y);
-						red = qRed(pix);
-						gre = qGreen(pix);
-						blu = qBlue(pix);
-						szu = str *(red - min);
-						npix = QColor((int)szu, gre, blu);
-					}
-					if (ln == 1)
-					{
-						pix = image->pixel(x, y);
-						tpix = newImage->pixel(x, y);
-						red = qRed(tpix);
-						gre = qGreen(pix);
-						blu = qBlue(pix);
-						szu = str *(gre - min);
-						npix = QColor(red, (int)szu, blu);
-					}
-					if (ln == 2)
-					{
-						pix = image->pixel(x, y);
-						tpix = newImage->pixel(x, y);
-						red = qRed(tpix);
-						gre = qGreen(tpix);
-						blu = qBlue(pix);
-						szu = str *(blu - min);
-						npix = QColor(red, gre, (int)szu);
-					}
+					double Rszu;
+					double Gszu;
+					double Bszu;
+					pix = image->pixel(x, y);
+					red = qRed(pix);
+					gre = qGreen(pix);
+					blu = qBlue(pix);
+					Rszu = Rstr*(red - Rmin);
+					Gszu = Gstr*(gre - Gmin);
+					Bszu = Bstr*(blu - Bmin);
+					npix = QColor((int)Rszu, (int)Gszu, (int)Bszu);
 					newImage->setPixel(x, y, npix.rgb());
 				}
 			}
-			ln++;
 		}
-	}
 	return newImage;
 }
