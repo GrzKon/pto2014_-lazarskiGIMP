@@ -14,7 +14,11 @@ math::matrix<float> BlurUniform::getMask(int size, Mode)
 {
     math::matrix<float> mask(size, size);
 
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+	for (int i = size; i-- != 0;) {
+		for (int j = size; j-- != 0;) {
+			mask(i, j) = 1;
+		}
+	}
 
     return mask;
 }

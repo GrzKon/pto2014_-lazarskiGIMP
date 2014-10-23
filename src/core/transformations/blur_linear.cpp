@@ -18,7 +18,18 @@ PNM* BlurLinear::transform()
 
     math::matrix<float> mask(maskSize, maskSize);
 
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+	//int r = (maskSize / 2) + 1, 
+		int current = 0;
+
+	for (int i = 0; i < maskSize; i++) {
+		for (int j = 0; j < maskSize; j++) {
+			mask(i, j) = tmpMask.at(current).toDouble();
+			current++;
+			if (normalize) {
+				mask(i, j) = mask(i, j) / sum(mask);
+			}
+		}
+	}
 
     return convolute(mask, RepeatEdge);
 }
