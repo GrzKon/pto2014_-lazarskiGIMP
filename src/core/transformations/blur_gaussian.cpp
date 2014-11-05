@@ -28,7 +28,7 @@ math::matrix<float> BlurGaussian::getMask(int size, Mode)
 	Mode mode = RepeatEdge;
 	for (int i = 0; i<size; i++){
 		for (int j = 0; j<size; j++){
-			mask(i, j) = getGauss(i, j, sigma);
+			mask(i, j) = getGauss(i-radius, j-radius, sigma);
 		}
 	}
 
@@ -37,8 +37,8 @@ math::matrix<float> BlurGaussian::getMask(int size, Mode)
 
 float BlurGaussian::getGauss(int x, int y, float sigma)
 {    
-	float pi = 3.14159265359;
-	float e = 2.718281828459;
+	float pi = 3.14159265359f;
+	float e = 2.718281828459f;
 	float g1 = (1 / (2 * pi*pow(sigma,2)));
 	float p1 = pow(x ,2) + pow(y ,2);
 	float p2 = (2 * pow(sigma, 2));
