@@ -13,6 +13,7 @@ public:
 
 private:
     int getMedian(int, int, Channel);
+	int trimValue(int);
 };
 
 #endif // NOISE_MEDIAN_H
