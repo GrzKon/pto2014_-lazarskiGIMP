@@ -19,6 +19,7 @@ private:
     int sigma_d;
     int sigma_r;
     int radius;
+	int trimValue(int);
 };
 
 #endif // NOISE_BILATERAL_H
