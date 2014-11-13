@@ -12,9 +12,19 @@ MorphDilate::MorphDilate(PNM* img, ImageViewer* iv) :
 
 const int MorphDilate::morph(math::matrix<float> window, math::matrix<bool> se)
 {
-    float min = PIXEL_VAL_MAX+1;
+    float min = PIXEL_VAL_MAX + 1;
 
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+	int windowSize = window.rowno();
 
-    return 0;
+	for (int i = 0; i < windowSize; i++) {
+		for (int j = 0; j < windowSize; j++) {
+			if (se(i, j) == true) {
+				if (window(i, j) < min) {
+					min = window(i, j);
+				}
+			}
+		}
+	}
+
+	return min;
 }

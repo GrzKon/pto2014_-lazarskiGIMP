@@ -1,20 +1,30 @@
 #include "morph_erode.h"
 
 MorphErode::MorphErode(PNM* img) :
-    MorphologicalOperator(img)
+MorphologicalOperator(img)
 {
 }
 
 MorphErode::MorphErode(PNM* img, ImageViewer* iv) :
-    MorphologicalOperator(img, iv)
+MorphologicalOperator(img, iv)
 {
 }
 
 const int MorphErode::morph(math::matrix<float> window, math::matrix<bool> se)
 {
-    float max=0.0;
+	float max = 0.0;
 
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+	int windowSize = window.rowno();
 
-    return 0;
+	for (int i = 0; i < windowSize; i++) {
+		for (int j = 0; j < windowSize; j++) {
+			if (se(i, j) == 1) {
+				if (window(i, j) > max) {
+					max = window(i, j);
+				}
+			}
+		}
+	}
+
+	return max;
 }
