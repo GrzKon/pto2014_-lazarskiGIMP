@@ -1,47 +1,42 @@
 #include "bin_gradient.h"
 
 BinarizationGradient::BinarizationGradient(PNM* img) :
-    Transformation(img)
+Transformation(img)
 {
 }
 
 BinarizationGradient::BinarizationGradient(PNM* img, ImageViewer* iv) :
-    Transformation(img, iv)
+Transformation(img, iv)
 {
 }
 
 PNM* BinarizationGradient::transform()
 {
-    int width = image->width();
-    int height = image->height();
+	int width = image->width();
+	int height = image->height();
 
-    PNM* newImage = new PNM(width, height, QImage::Format_Mono);
-	
-	int top = 0;
-	int bot = 0;
-	int tym = 0;
-	int grx = 0;
-	int gry = 0;
-	int gra = 0;
-	for (int x = 0; x<width; ++x)
+	PNM* newImage = new PNM(width, height, QImage::Format_Mono);
+
+	int top = 0, bot = 0, tym = 0, grx = 0, gry = 0, gra = 0;
+	for (int x = 0; x < width; ++x)
 	{
-		for (int y = 0; y<height; ++y)
+		for (int y = 0; y < height; ++y)
 		{
-			QRgb pix1 = image->pixel(x - 1, y);
-			QRgb pix2 = image->pixel(x + 1, y);
-			grx= qGray(pix2) - qGray(pix1);
-			pix1 = image->pixel(x, y - 1);
-			pix2 = image->pixel(x, y + 1);
+			QRgb pix, pix1, pix2;
+			pix1 = getPixel(x - 1, y, RepeatEdge);
+			pix2 = getPixel(x + 1, y, RepeatEdge);
+			grx = qGray(pix2) - qGray(pix1);
+			pix1 = getPixel(x, y - 1, RepeatEdge);
+			pix2 = getPixel(x, y + 1, RepeatEdge);
 			gry = qGray(pix2) - qGray(pix1);
-			if (grx >= gry) 
+			if (grx >= gry)
 			{
 				gra = grx;
 			}
-			else if (grx < gry)
-			{
+			else {
 				gra = gry;
 			}
-			QRgb pix = image->pixel(x, y);
+			pix = getPixel(x, y, RepeatEdge);
 			top += qGray(pix) * gra;
 			bot += gra;
 			tym = bot == 0 ? 0 : top / bot;
@@ -57,7 +52,7 @@ PNM* BinarizationGradient::transform()
 	}
 
 
-    return newImage;
+	return newImage;
 }
 
 
