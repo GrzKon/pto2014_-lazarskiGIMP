@@ -1,4 +1,5 @@
 #include "map_height.h"
+#include "conversion_grayscale.h"
 
 MapHeight::MapHeight(PNM* img) :
     Transformation(img)
@@ -17,7 +18,7 @@ PNM* MapHeight::transform()
 
     PNM* newImage = new PNM(width, height, QImage::Format_Indexed8);
 
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+	newImage = ConversionGrayscale::ConversionGrayscale(image).transform();
 
     return newImage;
 }

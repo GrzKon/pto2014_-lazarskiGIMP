@@ -1,15 +1,15 @@
 #include "edge_sobel.h"
 
 EdgeSobel::EdgeSobel(PNM* img, ImageViewer* iv) :
-    EdgeGradient(img, iv)
+EdgeGradient(img, iv)
 {
-    prepareMatrices();
+	prepareMatrices();
 }
 
 EdgeSobel::EdgeSobel(PNM* img) :
-    EdgeGradient(img)
+EdgeGradient(img)
 {
-    prepareMatrices();
+	prepareMatrices();
 }
 
 void EdgeSobel::prepareMatrices()
@@ -43,18 +43,40 @@ void EdgeSobel::prepareMatrices()
 
 math::matrix<float>* EdgeSobel::rawHorizontalDetection()
 {
-    math::matrix<float>* x_gradient = new math::matrix<float>(this->image->width(), this->image->height());
+	math::matrix<float>* x_gradient = new math::matrix<float>(this->image->width(), this->image->height());
 
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+	int width = x_gradient->rowno(),
+		height = x_gradient->colno();
 
-    return x_gradient;
+	for (int x = 0; x < width; x++)
+	{
+		for (int y = 0; y < height; y++)
+		{
+			math::matrix<float> window = getWindow(x, y, 3, LChannel, NullEdge);
+			(*x_gradient)(x, y) = Convolution::sum(Convolution::join(g_x, window));
+
+		}
+	}
+
+	return x_gradient;
 }
 
 math::matrix<float>* EdgeSobel::rawVerticalDetection()
 {
-    math::matrix<float>* y_gradient = new  math::matrix<float>(this->image->width(), this->image->height());
+	math::matrix<float>* y_gradient = new  math::matrix<float>(this->image->width(), this->image->height());
 
-    qDebug() << Q_FUNC_INFO << "Not implemented yet!";
+	int width = y_gradient->rowno(),
+		height = y_gradient->colno();
 
-    return y_gradient;
+	for (int x = 0; x < width; x++)
+	{
+		for (int y = 0; y < height; y++)
+		{
+			math::matrix<float> window = getWindow(x, y, 3, LChannel, NullEdge);
+			(*y_gradient)(x, y) = Convolution::sum(Convolution::join(g_y, window));
+
+		}
+	}
+
+	return y_gradient;
 }
