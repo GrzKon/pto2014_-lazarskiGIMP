@@ -89,20 +89,15 @@ PNM* EdgeZeroCrossing::transform()
 						}
 					}
 				}
+				int r, g, b;
 				if (minimumR<v - t && maximumR>v + t){
-					newImage->setPixel(x, y, qGray(lof->pixel(x, y)));
+					newImage->setPixel(x, y, maskR(size / 2, size / 2));
+				} 
+				else if (minimumG<v - t && maximumG>v + t){
+					newImage->setPixel(x, y, maskG(size / 2, size / 2));
 				}
-				else {
-					newImage->setPixel(x, y, 0);
-				}
-				if (minimumG<v - t && maximumG>v + t){
-					newImage->setPixel(x, y, qGray(lof->pixel(x, y)));
-				}
-				else {
-					newImage->setPixel(x, y, 0);
-				}
-				if (minimumB<v - t && maximumB>v + t){
-					newImage->setPixel(x, y, qGray(lof->pixel(x, y)));
+				else if (minimumB<v - t && maximumB>v + t){
+					newImage->setPixel(x, y, maskB(size / 2, size / 2));
 				}
 				else {
 					newImage->setPixel(x, y, 0);
