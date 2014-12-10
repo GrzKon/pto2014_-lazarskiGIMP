@@ -13,7 +13,9 @@ public:
 
 
 private:
-
+	int kos[361];
+	math::matrix<float> direction,
+		power;
 };
 
 #endif // EDGECANNY_H
