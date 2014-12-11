@@ -62,7 +62,5 @@ PNM* EdgeGradient::transform()
 	}
 
 	return newImage;
-
-	return newImage;
 }
 

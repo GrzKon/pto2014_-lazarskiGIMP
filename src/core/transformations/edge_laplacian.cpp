@@ -10,9 +10,12 @@ Convolution(img, iv)
 {
 }
 
-math::matrix<float> EdgeLaplacian::getMask(int, Mode)
+math::matrix<float> EdgeLaplacian::getMask(int size, Mode)
 {
-	int size = getParameter("size").toInt();
+	if (getParameter("size").toInt() > size) {
+		size = getParameter("size").toInt();
+	}
+	//int 
 	math::matrix<float> mask(size, size);
 
 	for (int x = 0; x < size; x++)
