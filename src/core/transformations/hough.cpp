@@ -63,7 +63,7 @@ PNM* Hough::transform()
 
 	for (int i = 0; i < thetaSize; i++) {
 		for (int j = 0, len = pmax * 2 + 1; j < len; j++) {
-			newImage->setPixel(i, j, (int)((hough(i, j) * (256 / max))));
+			newImage->setPixel(i, j, (int)(((hough(i, j) * 255)/ max)));
 		}
 	}
 

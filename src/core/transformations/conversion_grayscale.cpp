@@ -26,7 +26,7 @@ PNM* ConversionGrayscale::transform()
 			{
 			QColor color = QColor::fromRgb(image->pixel(x, y)); // Getting the pixel(x,y) value
 
-			newImage->setPixel(x, y, color == Qt::black ? PIXEL_VAL_MIN : PIXEL_VAL_MAX);
+			newImage->setPixel(x, y, color == Qt::white ? Qt::color1 : Qt::color0);
 			}
 
     }
